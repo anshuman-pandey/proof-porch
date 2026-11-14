@@ -1,8 +1,10 @@
-# Testimonial cabinet (working title)
+# Testimonial Cabinet
+
+Open-source alternative to Senja and Feedspace for collecting and displaying customer testimonials. Self-hosted, with consent forms, testimonial approval, embeddable walls of love, and CSV export. MIT licensed.
 
 A small, single-owner, self-hosted text testimonial tool. Collect permission, review submissions, publish an embeddable wall, and export your data. Built as the first OSS Everyday project targeting the text collection/publishing workflow in Senja and Feedspace.
 
-Status: local tested candidate. No public deployment or independent customer-use claims. The queue ID is `open-proof`; final public naming remains pending because OpenProof is already used by other software.
+Status: developer preview. Public source repository: https://github.com/anshuman-pandey/testimonial-cabinet . No hosted public demo or independent customer-use claims. Hosted HTTPS, cross-site iframe and persistent-volume deployment checks remain pending.
 
 ## Local start
 
