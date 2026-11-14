@@ -4,19 +4,24 @@ import os
 import re
 import secrets
 import subprocess
+import tempfile
+from pathlib import Path
 import urllib.parse
 import urllib.request
-from werkzeug.security import generate_password_hash
+from configure import config_text, write_config
 
 project = 'testimonial-test-' + secrets.token_hex(5)
 password = secrets.token_urlsafe(24)
-env = dict(os.environ, SECRET_KEY=secrets.token_hex(32),
-           ADMIN_PASSWORD_HASH=generate_password_hash(password), COOKIE_SECURE='0', HOST_PORT='0')
+environment_dir = tempfile.TemporaryDirectory(prefix='testimonial-config-test-')
+config_file = Path(environment_dir.name) / '.env'
+write_config(config_file, config_text(password, True).replace('HOST_PORT=8000', 'HOST_PORT=0'))
+env = {key: value for key, value in os.environ.items()
+       if key not in {'SECRET_KEY', 'ADMIN_PASSWORD_HASH', 'COOKIE_SECURE', 'HOST_PORT'}}
 base = ''
 
 
 def compose(*args):
-    return subprocess.check_output(['docker', 'compose', '-p', project, *args], env=env, text=True)
+    return subprocess.check_output(['docker', 'compose', '--env-file', str(config_file), '-p', project, *args], env=env, text=True)
 
 
 def start(*args):
@@ -74,4 +79,6 @@ try:
     print('PASS: non-root Compose, named-volume persistence across two recreations, owner login, CSV and preserved withdrawal link.')
 finally:
     # Only this randomly named test project and its disposable volume are removed.
-    subprocess.run(['docker', 'compose', '-p', project, 'down', '-v'], env=env, check=False)
+    subprocess.run(['docker', 'compose', '--env-file', str(config_file), '-p', project, 'down', '-v'], env=env, check=False)
+
+    environment_dir.cleanup()
