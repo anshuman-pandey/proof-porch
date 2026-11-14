@@ -4,7 +4,7 @@ Open-source alternative to Senja and Feedspace for collecting and displaying cus
 
 A small, single-owner, self-hosted text testimonial tool. Collect permission, review submissions, publish an embeddable wall, and export your data. Built as the first OSS Everyday project targeting the text collection/publishing workflow in Senja and Feedspace.
 
-Status: developer preview. Public source repository: https://github.com/anshuman-pandey/testimonial-cabinet . No hosted public demo or independent customer-use claims. Hosted HTTPS, cross-site iframe and persistent-volume deployment checks remain pending.
+Status: developer preview. Public source repository: https://github.com/anshuman-pandey/testimonial-cabinet . No hosted public demo or independent customer-use claims. Hosted HTTPS and persistent-volume deployment checks remain pending. Cross-origin iframe behavior is tested locally.
 
 ## Local start
 
@@ -43,12 +43,12 @@ pip install pytest==9.2.0
 python -m pytest -q
 ```
 
-Integration coverage includes full collection/moderation/export/withdrawal, consent rejection, unauthorized access, CSRF, escaped script input, spreadsheet-formula escaping, rate limits and validation. Screenshots, when present, contain explicitly synthetic content. Backup/restore and dependency audit passed locally; hosted HTTPS, cross-site iframe acceptance and persistent-volume deployment still require validation before public launch.
+Integration coverage includes full collection/moderation/export/withdrawal, consent rejection, unauthorized access, CSRF, escaped script input, spreadsheet-formula escaping, rate limits and validation. Screenshots, when present, contain explicitly synthetic content. Backup/restore and dependency audit passed locally; the real browser suite now tests a cookie-free iframe on a separate localhost origin, approval/privacy/withdrawal visibility, anonymous export rejection and downloaded CSV contents. Hosted HTTPS and persistent-volume deployment still require validation before public hosted launch.
 
 ## Distribution
 
 First audience: small agencies and indie founders collecting written client feedback. Demonstrate create collection → guest permission → publish → embed → withdraw in one recording. Publish a factual workflow comparison and runnable package; no claims of complete Senja/Feedspace parity. Prepare eligible self-hosting listings only after public installation instructions and a stable downloadable release exist. No submissions or promotional posts have been made.
 
-For the disposable browser fixture run `python preview.py` (localhost port 5087; test-only password `preview-only-password`). With Playwright installed, run `node artifacts/browser-acceptance.cjs`. The fixture uses a temporary database removed when it stops. Never deploy preview.py. The Dockerfile deliberately excludes it and the test artifacts.
+For the disposable browser fixture run `python preview.py` (localhost port 5087; test-only password `preview-only-password`). In another terminal, run `npm ci`, `npx playwright install chromium`, then `npm run test:browser`. The suite starts its own independent example-site server and uses isolated browser contexts. `CHROMIUM_PATH` optionally selects an installed Chromium binary. `TEST_URL` and `TEST_OWNER_PASSWORD` can target a dedicated disposable test deployment; never point acceptance at a customer database. The fixture uses a temporary database removed when it stops. Never deploy preview.py. The Dockerfile deliberately excludes it and the test artifacts.
 
 When building behind a private TLS proxy, supply its trusted CA bundle as a BuildKit secret: `docker build --secret id=pip_ca,src=/path/to/ca-bundle.crt -t testimonial-cabinet .`. The optional certificate is used only during dependency installation and is not baked into the image. TLS verification stays enabled.

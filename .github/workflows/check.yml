@@ -12,3 +12,18 @@ jobs:
           python-version: '3.12'
       - run: pip install -r requirements.txt pytest==9.2.0
       - run: python -m pytest -q
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Cross-origin browser workflow
+        run: |
+          python preview.py &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:5087/ > /dev/null; then break; fi
+            sleep 1
+          done
+          npm run test:browser
