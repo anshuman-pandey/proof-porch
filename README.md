@@ -1,4 +1,26 @@
-# Testimonial Cabinet
+<div align="center">
+
+![Testimonial Cabinet — Good words deserve a home.](docs/assets/banner.svg)
+
+### Open-source alternative to Senja and Feedspace for text testimonial collection and publishing
+
+Collect with consent. Publish with care.
+
+**MIT licensed** · **Own your data** · **No AI service required**
+
+[**Local start →**](#local-start) · [Workflow](#the-workflow) · [MIT license](LICENSE)
+
+</div>
+
+> Public self-hosted preview. Hosted HTTPS demo acceptance remains pending.
+
+![Testimonial Cabinet application workflow](artifacts/home.png)
+
+*An actual application screen; no customer endorsements are implied.*
+
+## The workflow
+
+**Consent forms → approval → embeddable wall → CSV export.**
 
 Open-source alternative to Senja and Feedspace for collecting and displaying customer testimonials. Self-hosted, with consent forms, testimonial approval, embeddable walls of love, and CSV export. MIT licensed.
 
