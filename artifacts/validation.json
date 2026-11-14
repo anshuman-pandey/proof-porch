@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-14T18:36:59.537412+00:00",
+  "timestamp": "2026-11-14T19:37:55.003458+00:00",
   "product": "open-proof",
   "display_name": "Testimonial Cabinet",
   "status": "public source preview; no hosted demo",
   "tests": {
     "factory_unit": 9,
-    "product_integration": 12,
+    "product_integration": 26,
     "browser_local": "passed",
     "browser_docker": "passed",
     "mobile_visual_inspection": "passed",
@@ -13,7 +13,8 @@
     "dependency_audit": "No known vulnerabilities found",
     "cross_origin_cookie_free_embed": "passed: pending hidden, approved visible, private hidden, withdrawn removed",
     "browser_csv_download": "passed: approved row downloaded, withdrawn row absent, anonymous export rejected",
-    "compose_named_volume": "passed: non-root process, approval/CSV persistence across recreation, original withdrawal link works, deletion persists across second recreation"
+    "compose_named_volume": "passed: non-root process, approval/CSV persistence across recreation, original withdrawal link works, deletion persists across second recreation",
+    "canonical_public_links": "passed: configured HTTPS collection/embed/withdrawal links ignore forwarded headers; unsafe origins rejected; localhost fallback retained"
   },
   "container_image": "sha256:a929b2f7aee72fa07999011b776289db84c79d41de80d7a7e079899d798f1d1f",
   "fixes_during_validation": [

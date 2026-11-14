@@ -9,6 +9,7 @@ import sqlite3
 import time
 from functools import wraps
 from pathlib import Path
+from urllib.parse import urlsplit
 from flask import Flask, abort, g, redirect, render_template, request, session, url_for, Response
 from werkzeug.security import check_password_hash
 
@@ -20,6 +21,7 @@ def create_app(config=None):
     app.config.update(SECRET_KEY=os.environ.get('SECRET_KEY'),
         ADMIN_PASSWORD_HASH=os.environ.get('ADMIN_PASSWORD_HASH'),
         DATABASE=os.environ.get('DATABASE', 'data/proof.sqlite'),
+        PUBLIC_BASE_URL=os.environ.get('PUBLIC_BASE_URL', ''),
         SESSION_COOKIE_HTTPONLY=True, SESSION_COOKIE_SAMESITE='Lax',
         SESSION_COOKIE_SECURE=os.environ.get('COOKIE_SECURE', '1') == '1',
         MAX_CONTENT_LENGTH=32 * 1024)
@@ -27,6 +29,19 @@ def create_app(config=None):
         app.config.update(config)
     if not app.config['SECRET_KEY'] or not app.config['ADMIN_PASSWORD_HASH']:
         raise RuntimeError('Set SECRET_KEY and ADMIN_PASSWORD_HASH; see README.')
+    public_base = app.config['PUBLIC_BASE_URL']
+    if public_base:
+        try:
+            parts = urlsplit(public_base)
+            valid_port = parts.port  # Reject invalid ports before generating links.
+            if (parts.scheme != 'https' or not parts.hostname or parts.username is not None
+                    or parts.password is not None or parts.path not in ('', '/')
+                    or '?' in public_base or '#' in public_base or '\\' in public_base
+                    or parts.netloc.endswith(':') or any(ord(c) <= 32 for c in public_base)):
+                raise ValueError()
+        except (ValueError, TypeError):
+            raise ValueError('PUBLIC_BASE_URL must be an HTTPS origin, e.g. https://testimonials.example.com, without credentials, path, query or fragment.') from None
+        app.config['PUBLIC_BASE_URL'] = public_base.rstrip('/')
     Path(app.config['DATABASE']).parent.mkdir(parents=True, exist_ok=True)
     with sqlite3.connect(app.config['DATABASE']) as db:
         db.executescript('''
@@ -57,7 +72,12 @@ def create_app(config=None):
         if 'csrf' not in session:
             session['csrf'] = secrets.token_urlsafe(32)
         return session['csrf']
-    app.jinja_env.globals.update(csrf=csrf, consent_text=CONSENT)
+    def public_url(endpoint, **values):
+        if app.config['PUBLIC_BASE_URL']:
+            return app.config['PUBLIC_BASE_URL'] + url_for(endpoint, **values)
+        return url_for(endpoint, _external=True, **values)
+
+    app.jinja_env.globals.update(csrf=csrf, consent_text=CONSENT, public_url=public_url)
 
     @app.before_request
     def verify_csrf():
