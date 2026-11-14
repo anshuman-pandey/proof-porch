@@ -80,3 +80,32 @@ def test_delete_requires_confirmation(app):
  r=c.post(f'/admin/{b}/{i}/delete',data={'csrf':csrf(c,'/admin')})
  assert r.status_code==200 and 'Permanently delete' in r.text
  assert item(app)==i
+
+def test_public_links_use_configured_https_origin(app):
+ config=dict(app.config);config['PUBLIC_BASE_URL']='https://testimonials.example.test/'
+ configured=create_app(config)
+ owner,board=setup(configured)
+ response=owner.get('/admin/'+board,headers={'X-Forwarded-Proto':'http','X-Forwarded-Host':'untrusted.example'})
+ assert f'https://testimonials.example.test/collect/{board}' in response.text
+ assert f'https://testimonials.example.test/wall/{board}' in response.text
+ assert 'untrusted.example' not in response.text
+ visitor=configured.test_client();response=submit(visitor,board)
+ assert 'https://testimonials.example.test/remove/' in response.text
+ assert 'http://localhost/remove/' not in response.text
+ # Normal request routes and security headers remain unchanged.
+ assert response.headers['Referrer-Policy']=='no-referrer'
+ assert visitor.get('/wall/'+board).status_code==200
+
+@pytest.mark.parametrize('origin',[
+ 'http://public.example','//public.example','https://user:pass@example.com',
+ 'https://example.com/subpath','https://example.com?token=secret','https://example.com#fragment',
+ 'https://example.com?','https://example.com#',
+ 'https://example.com:invalid','https://example.com\\evil','https://example.com\n.evil','https://example.com:'
+])
+def test_public_origin_rejects_unsafe_configuration(app,origin):
+ config=dict(app.config);config['PUBLIC_BASE_URL']=origin
+ with pytest.raises(ValueError,match='HTTPS origin'):create_app(config)
+
+def test_local_link_fallback_still_works(app):
+ owner,board=setup(app)
+ assert f'http://localhost/collect/{board}' in owner.get('/admin/'+board).text
