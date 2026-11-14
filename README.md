@@ -1,6 +1,6 @@
 <div align="center">
 
-![Testimonial Cabinet — Good words deserve a home.](docs/assets/banner.svg)
+![Proof Porch — Good words deserve a home.](docs/assets/banner.svg)
 
 ### Open-source alternative to Senja and Feedspace for text testimonial collection and publishing
 
@@ -14,7 +14,7 @@ Collect with consent. Publish with care.
 
 > Public self-hosted preview. Hosted HTTPS demo acceptance remains pending.
 
-![Testimonial Cabinet application workflow](artifacts/home.png)
+![Proof Porch application workflow](artifacts/home.png)
 
 *An actual application screen; no customer endorsements are implied.*
 
