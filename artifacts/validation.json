@@ -1,18 +1,19 @@
 {
-  "timestamp": "2026-11-14T17:41:26.528833+00:00",
+  "timestamp": "2026-11-14T18:36:59.537412+00:00",
   "product": "open-proof",
   "display_name": "Testimonial Cabinet",
   "status": "public source preview; no hosted demo",
   "tests": {
     "factory_unit": 9,
-    "product_integration": 10,
+    "product_integration": 12,
     "browser_local": "passed",
     "browser_docker": "passed",
     "mobile_visual_inspection": "passed",
     "sqlite_backup_restore": "passed",
     "dependency_audit": "No known vulnerabilities found",
     "cross_origin_cookie_free_embed": "passed: pending hidden, approved visible, private hidden, withdrawn removed",
-    "browser_csv_download": "passed: approved row downloaded, withdrawn row absent, anonymous export rejected"
+    "browser_csv_download": "passed: approved row downloaded, withdrawn row absent, anonymous export rejected",
+    "compose_named_volume": "passed: non-root process, approval/CSV persistence across recreation, original withdrawal link works, deletion persists across second recreation"
   },
   "container_image": "sha256:a929b2f7aee72fa07999011b776289db84c79d41de80d7a7e079899d798f1d1f",
   "fixes_during_validation": [
@@ -20,10 +21,9 @@
     "Private TLS CA via optional BuildKit secret, without disabling verification"
   ],
   "remaining": [
-    "Hosted HTTPS deployment acceptance",
-    "Persistent-volume deployment acceptance"
+    "Hosted HTTPS deployment acceptance"
   ],
-  "next_action": "Run expanded browser suite in GitHub CI; verify deployment before claiming hosted release.",
+  "next_action": "Verify expanded GitHub CI and publish a self-hosted preview release. Hosted public demo remains unverified.",
   "kpi": {
     "new_merged_prs_this_run": 0,
     "star_delta_this_run": null,
