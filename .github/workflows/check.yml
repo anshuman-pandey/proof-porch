@@ -27,3 +27,6 @@ jobs:
             sleep 1
           done
           npm run test:browser
+      - run: docker build -t testimonial-cabinet:local .
+      - name: Persistent Compose lifecycle
+        run: python scripts/check_container.py
