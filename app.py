@@ -1,5 +1,6 @@
 """Single-owner testimonial collection. Run behind HTTPS for public deployment."""
 import csv
+import json
 import hashlib
 import hmac
 import io
@@ -15,6 +16,7 @@ from werkzeug.security import check_password_hash
 
 CONSENT = 'I permit this site owner to publish my name, role and testimonial on their website. I can withdraw using my private removal link.'
 
+CONSENT_TRANSLATIONS = json.loads((Path(__file__).parent / 'static' / 'consent.json').read_text())
 
 def create_app(config=None):
     app = Flask(__name__)
@@ -92,7 +94,7 @@ def create_app(config=None):
         response.headers['Referrer-Policy'] = 'no-referrer'
         response.headers['Cache-Control'] = 'no-store'
         ancestors = '*' if request.endpoint == 'wall' else "'none'"
-        response.headers['Content-Security-Policy'] = f"default-src 'self'; style-src 'self'; script-src 'none'; form-action 'self'; base-uri 'none'; frame-ancestors {ancestors}"
+        response.headers['Content-Security-Policy'] = f"default-src 'self'; style-src 'self'; script-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors {ancestors}"
         if request.endpoint != 'wall':
             response.headers['X-Frame-Options'] = 'DENY'
         return response
@@ -195,7 +197,7 @@ def create_app(config=None):
             name, role, quote = field('name',80), field('role',120,False), field('quote',2000)
             token = secrets.token_urlsafe(32)
             db().execute('INSERT INTO testimonials(id,board,name,role,quote,consent,created,removal_hash) VALUES (?,?,?,?,?,?,?,?)',
-                (secrets.token_urlsafe(12),board,name,role,quote,CONSENT,int(time.time()),hashlib.sha256(token.encode()).hexdigest()))
+                (secrets.token_urlsafe(12),board,name,role,quote,CONSENT_TRANSLATIONS.get(request.form.get('interface_locale'),CONSENT),int(time.time()),hashlib.sha256(token.encode()).hexdigest()))
             db().commit()
             return render_template('thanks.html', token=token), 201
         return render_template('collect.html', board=b)
