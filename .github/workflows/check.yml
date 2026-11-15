@@ -30,3 +30,6 @@ jobs:
       - run: docker build -t testimonial-cabinet:local .
       - name: Persistent Compose lifecycle
         run: python scripts/check_container.py
+      - run: node --test i18n.catalog.test.cjs
+      - name: Interface languages (isolated fixtures)
+        run: npm run test:i18n

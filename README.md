@@ -99,3 +99,9 @@ For the disposable browser fixture run `python preview.py` (localhost port 5087;
 When building behind a private TLS proxy, supply its trusted CA bundle as a BuildKit secret: `docker build --secret id=pip_ca,src=/path/to/ca-bundle.crt -t testimonial-cabinet .`. The optional certificate is used only during dependency installation and is not baked into the image. TLS verification stays enabled.
 
 To reproduce container lifecycle acceptance, build `testimonial-cabinet:local`, install the Python requirements, and run `python scripts/check_container.py`. It creates and removes only a randomly named disposable Compose project and its test volume.
+
+## Interface languages
+
+English · Deutsch · Español · 日本語 · 简体中文 · 繁體中文
+
+The interface follows your browser preferences until you choose a language. Switching keeps your draft and saves your choice locally. Translations are bundled; no translation service or telemetry is used. Your content is never translated. Unknown technical diagnostics fall back to English. See [localization notes](I18N.md) for scope and testing.

@@ -109,3 +109,18 @@ def test_public_origin_rejects_unsafe_configuration(app,origin):
 def test_local_link_fallback_still_works(app):
  owner,board=setup(app)
  assert f'http://localhost/collect/{board}' in owner.get('/admin/'+board).text
+
+@pytest.mark.parametrize('locale', ['en','de','es','ja','zh-CN','zh-TW','invalid'])
+def test_stores_whitelisted_displayed_consent(app,locale):
+ from app import CONSENT,CONSENT_TRANSLATIONS
+ c,b=setup(app)
+ assert submit(c,b,interface_locale=locale).status_code==201
+ with sqlite3.connect(app.config['DATABASE']) as d:
+  recorded=d.execute('SELECT consent FROM testimonials').fetchone()[0]
+ assert recorded==CONSENT_TRANSLATIONS.get(locale,CONSENT)
+
+def test_localization_assets_are_same_origin_only(app):
+ c=app.test_client()
+ assert "script-src 'self'" in c.get('/').headers['Content-Security-Policy']
+ assert c.get('/static/i18n.js').status_code==200
+ assert c.get('/static/messages.js').status_code==200

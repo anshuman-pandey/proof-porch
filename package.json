@@ -1,1 +1,12 @@
-{"name":"testimonial-cabinet-browser-tests","private":true,"version":"0.1.0","scripts":{"test:browser":"node artifacts/browser-acceptance.cjs"},"devDependencies":{"playwright":"1.62.1"}}
+{
+  "name": "testimonial-cabinet-browser-tests",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "test:browser": "node artifacts/browser-acceptance.cjs",
+    "test:i18n": "python3 scripts/check_i18n.py"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}
