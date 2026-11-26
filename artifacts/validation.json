@@ -29,5 +29,30 @@
     "new_merged_prs_this_run": 0,
     "star_delta_this_run": null,
     "note": "Daily snapshot already collected; no claim of new star activity."
+  },
+  "current_audit": {
+    "checked_at": "2026-11-26T13:36:59.571702+00:00",
+    "source_head": "84a1e7af8ef050171ad9b48c3ea5ac5c3c5621de",
+    "source_publication": "https://github.com/anshuman-pandey/proof-porch",
+    "source_public": true,
+    "ci": {
+      "conclusion": "success",
+      "headSha": "84a1e7af8ef050171ad9b48c3ea5ac5c3c5621de",
+      "status": "completed",
+      "url": "https://github.com/anshuman-pandey/proof-porch/actions/runs/43703074884"
+    },
+    "local_core_check": {
+      "exit": 0,
+      "summary": "..................................                                       [100%]\n34 passed in 8.26s\n"
+    },
+    "release_urls": [
+      "https://github.com/anshuman-pandey/proof-porch/releases/tag/v0.1.0-preview.2",
+      "https://github.com/anshuman-pandey/proof-porch/releases/tag/v0.1.0-preview.1"
+    ],
+    "hosted_demo_url": null,
+    "remaining_gates": [
+      "Hosted HTTPS deployment acceptance"
+    ],
+    "note": "Historical validation below is retained as dated evidence. Source publication does not establish a hosted deployment."
   }
 }
