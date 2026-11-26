@@ -26,7 +26,7 @@ Open-source alternative to Senja and Feedspace for collecting and displaying cus
 
 A small, single-owner, self-hosted text testimonial tool. Collect permission, review submissions, publish an embeddable wall, and export your data. Built as the first OSS Everyday project targeting the text collection/publishing workflow in Senja and Feedspace.
 
-Status: developer preview. Public source repository: https://github.com/anshuman-pandey/testimonial-cabinet . No hosted public demo or independent customer-use claims. Hosted HTTPS deployment acceptance remains pending; local Compose named-volume persistence is tested. Cross-origin iframe behavior is tested locally.
+Status: developer preview. Public source repository: https://github.com/anshuman-pandey/proof-porch . No hosted public demo or independent customer-use claims. Hosted HTTPS deployment acceptance remains pending; local Compose named-volume persistence is tested. Cross-origin iframe behavior is tested locally.
 
 ## Local start
 
@@ -105,3 +105,7 @@ To reproduce container lifecycle acceptance, build `testimonial-cabinet:local`, 
 English · Deutsch · Español · 日本語 · 简体中文 · 繁體中文
 
 The interface follows your browser preferences until you choose a language. Switching keeps your draft and saves your choice locally. Translations are bundled; no translation service or telemetry is used. Your content is never translated. Unknown technical diagnostics fall back to English. See [localization notes](I18N.md) for scope and testing.
+
+## Current verification
+
+See the [26 November audit checkpoint](docs/AUDIT.md) for the verified repository, release links, fresh core test result and remaining deployment/browser gates. Earlier validation records remain dated evidence.
